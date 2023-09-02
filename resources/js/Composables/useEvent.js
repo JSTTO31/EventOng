@@ -17,7 +17,7 @@ export default (event) => {
 
         const month = getMonth(start_date.getMonth())
 
-        return  month + ', 2023' + ' | 4 Days'
+        return  month + ' ' + start_date.getDate()  + ', 2023' + ' | 4 Days'
     })
 
     const time = computed(() => {

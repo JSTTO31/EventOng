@@ -25,7 +25,6 @@
             <span class="pa-2" style="position: absolute;top: 0;left: 0">
                 <v-chip variant="elevated" class="rounded-lg" :color="mode.color">{{ mode.label }}</v-chip>
             </span>
-
         </v-card>
     </v-hover>
 </template>

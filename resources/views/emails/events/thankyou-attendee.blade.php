@@ -1,20 +1,18 @@
-# Event Registration Confirmation
+@component('mail::message')
+# Thank You for Registering on {{$event->title}}!
 
-Hello [Attendee's Name],
+Dear {{ $attendee->name }},
 
-Thank you for registering for the [Event Name]! We're excited to have you join us.
+We wanted to extend our heartfelt gratitude for registering for our event. Your participation is greatly appreciated, and we're excited to have you join us!
 
-**Event Details:**
-- **Event:** [Event Name]
-- **Date:** [Event Date]
-- **Time:** [Event Time]
-- **Location:** [Event Location]
+Event Details:
+- Date: {{ $event->date_time->event_date_start }}
+- Venue: {{$event->location->name}}
 
-You are now registered to attend the event. We look forward to seeing you there!
+If you have any questions or need further information, please don't hesitate to reach out to us.
 
-If you have any questions or need further assistance, feel free to contact us at [Contact Email].
+Thank you once again for your registration. We're looking forward to a fantastic event!
 
 Best regards,
-[Your Name]
-[Your Title]
-[Your Contact Information]
+Your Inventive Media team
+@endcomponent

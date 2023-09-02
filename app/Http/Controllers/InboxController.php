@@ -25,9 +25,9 @@ class InboxController extends Controller
         return Inertia::render('Inbox', [
             'attendees' => EventAttendee::join('attendees', 'attendees.id', '=', 'event_attendees.id')
                            ->select(DB::raw('event_attendees.*, attendees.name as name, attendees.email as email, attendees.address as address, attendees.mobile as mobile'))
-                           ->latest()
+                           ->orderBy('event_attendees.created_at', 'desc')
                            ->cursorPaginate(10),
-            'attendee' => EventAttendee::with('event', 'messages')->join('attendees', 'attendees.id', '=', 'event_attendees.id')
+            'attendee' => EventAttendee::with(['event' => fn($query) => $query->with('date_time', 'location'), 'messages'])->join('attendees', 'attendees.id', '=', 'event_attendees.id')
             ->select(DB::raw('event_attendees.*, attendees.name as name, attendees.email as email, attendees.address as address, attendees.mobile as mobile'))
             ->where('event_attendees.id', $request->attendee_id)
             ->first(),

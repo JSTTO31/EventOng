@@ -1,5 +1,12 @@
+
+<script>
+export default {
+    inheritAttrs: true
+}
+</script>
 <script setup>
-import {  Head } from '@inertiajs/vue3';
+import NotificationContainer from '@/Components/NotificationContainer.vue';
+import {  Head, router, usePage } from '@inertiajs/vue3';
 
 defineProps({
     title: {
@@ -7,6 +14,29 @@ defineProps({
     },
     icon: null,
     showAppBar: true,
+    notifications: []
+})
+
+
+if(usePage().props.auth.user){
+    Echo.private('App.Models.User.' + 1).notification((data) => {
+
+        router.reload({ only: ['notifications'] })
+
+        if (Notification.permission) {
+            let notification = new Notification(data.subject, {
+                body: data.message,
+                icon: usePage().props.icon
+            });
+
+            notification.close()
+        }
+    })
+}
+
+window.addEventListener('beforeunload', () => {
+    Echo.unsubscribe('App.Models.User.1')
+    return confirm('Hello world!')
 })
 
 </script>
@@ -23,7 +53,8 @@ defineProps({
                 <v-spacer></v-spacer>
                 <v-btn @click="$inertia.visit($route('dashboard.index'))" :variant="$route().current() == 'dashboard.index' ? 'elevated' : 'text'" icon="mdi-view-dashboard" variant="text" size="large" class="my-2 rounded-lg"></v-btn>
                 <v-btn @click="$inertia.visit($route('events.index'))" :variant="$route().current() == 'events.index' ? 'elevated' : 'text'" icon="mdi-calendar" variant="text" size="large" class="my-2 rounded-lg"></v-btn>
-                <v-btn @click="$inertia.visit($route('inboxes.index'))" :variant="$route().current() == 'inboxes.index' ? 'elevated' : 'text'" icon="mdi-inbox" variant="text" size="large" class="my-2 rounded-lg"></v-btn>
+                <v-btn @click="$inertia.visit($route('image-libraries.index'))" :variant="$route().current() == 'image-libraries.index' ? 'elevated' : 'text'" icon="mdi-image-multiple-outline" variant="text" size="large" class="my-2 rounded-lg"></v-btn>
+                <v-btn @click="$inertia.visit($route('inboxes.index'))" :variant="$route().current() == 'inboxes.index' ? 'elevated' : 'text'" icon="mdi-inbox-arrow-down-outline" variant="text" size="large" class="my-2 rounded-lg"></v-btn>
                 <v-spacer></v-spacer>
                 <v-btn icon="mdi-cog" variant="text" size="large" class="rounded-lg"></v-btn>
             </v-card>
@@ -35,10 +66,15 @@ defineProps({
             <v-spacer></v-spacer>
             <v-btn prepend-icon="mdi-plus" variant="elevated" flat color="blue-darken-4" class="text-capitalize" @click="$inertia.visit($route('events.create'))">New Event</v-btn>
             <v-divider inset vertical class="mx-5"></v-divider>
-            <v-badge dot color="red" class="">
-                <v-btn icon="mdi-bell-outline" variant="elevated" class=""></v-btn>
-            </v-badge>
-            <v-menu>
+            <v-menu :close-on-content-click="false" :disabled="$route().current() == 'notifications.index'">
+                <template #activator="{props}">
+                    <v-badge  dot color="red" :model-value="$page.props.hasUnreadNotifications && $route().current() != 'notifications.index'" v-bind="props">
+                        <v-btn :disabled="$route().current() == 'notifications.index'" icon="mdi-bell-outline" variant="elevated" class=""></v-btn>
+                    </v-badge>
+                </template>
+                <NotificationContainer :notifications="$page.props.notifications"></NotificationContainer>
+            </v-menu>
+            <v-menu >
                 <template #activator="{props}">
                     <v-btn v-bind="props" icon="mdi-chevron-down" variant="elevated" class="ml-5 "></v-btn>
                 </template>
@@ -59,8 +95,8 @@ defineProps({
                 </v-card>
             </v-menu>
         </v-app-bar>
-        <v-main class="bg-blue-grey-lighten-5">
-            <v-container class="pa-5 h-100" fluid>
+        <v-main class="bg-blue-grey-lighten-5" >
+            <v-container class="pa-5 h-100" fluid v-bind="$attrs">
                 <slot></slot>
             </v-container>
         </v-main>

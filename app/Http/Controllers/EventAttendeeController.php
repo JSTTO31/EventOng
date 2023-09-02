@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AttendeeRegistered as EventsAttendeeRegistered;
 use App\Http\Requests\EventStoreAttendeeRequest;
 use App\Models\Attendee;
 use App\Models\Event;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Mail\AttendeeRegistered;
+use App\Mail\EmailAttendeeVerification;
 
 class EventAttendeeController extends Controller
 {
@@ -23,26 +25,28 @@ class EventAttendeeController extends Controller
             $attendee = Attendee::create($request->only(['email', 'name', 'address', 'mobile']));
         }
 
-        Mail::to(['joshuasotto@example.example'])->send(new AttendeeRegistered($event, $attendee));
-
         $alumni = $attendee->isAlumni();
-
-
         $event_attendee = EventAttendee::where('event_id', $event->id)->where('attendee_id', $attendee->id)->exists();
 
         if(!$event_attendee){
             $already_registered = false;
             $event->event_attendees()->create(['attendee_id' => $attendee->id]);
 
-            $user = User::find(1);
-            // Notification::send($user, new AttendeeRegisteredNotification($event, $attendee));
-            // Mail::to($user)->send(new AttendeeRegistered($event, $attendee));
+            event(new EventsAttendeeRegistered($event, $attendee));
         }
 
         return back()->with(['random' => [
             'alumni' => $alumni,
             'already_registered' => $already_registered,
         ]]);
+    }
+
+
+    public function notify(Request $request, EventAttendee $event_attendee){
+        $event_attendee->load('attendee');
+        Mail::to($event_attendee->attendee->email)->send(new EmailAttendeeVerification($event_attendee));
+
+        return back();
     }
 
 

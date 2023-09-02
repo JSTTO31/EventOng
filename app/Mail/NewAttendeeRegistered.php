@@ -2,23 +2,28 @@
 
 namespace App\Mail;
 
+use App\Models\Attendee;
+use App\Models\Event;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderShipped extends Mailable
+class NewAttendeeRegistered extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
+    public $attendee;
+    public $event;
+
+    public function __construct(Event $event, Attendee $attendee)
     {
-        //
+        $this->attendee = $attendee;
+        $this->event = $event;
+        $this->event->load('location', 'date_time', 'organizer');
     }
 
     /**
@@ -27,7 +32,8 @@ class OrderShipped extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Shipped',
+            from: new Address('inventive.media@gmail.com', 'Henry Ong'),
+            subject: 'Attendee Registered',
         );
     }
 
@@ -37,7 +43,7 @@ class OrderShipped extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.shipped',
+            markdown: 'emails.events.attendee-registered',
         );
     }
 
@@ -46,8 +52,8 @@ class OrderShipped extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
+    public function attachments()
     {
-        return [];
+        // return Attachment::fromStorageDisk('public', '/storage/calendar.png');
     }
 }

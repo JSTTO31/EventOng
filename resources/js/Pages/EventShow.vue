@@ -210,7 +210,6 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import useEventRegister from '@/Composables/useEventRegister'
 import { usePage } from '@inertiajs/vue3';
 import useEvent from '@/Composables/useEvent';

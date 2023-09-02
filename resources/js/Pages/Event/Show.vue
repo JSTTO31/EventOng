@@ -1,29 +1,6 @@
 <template>
     <AuthenticatedLayoutVue title="Events" icon="mdi-calendar">
        <EventAppBar :flat="flat" v-if="selected" :event="selected" :scrolledUp="scrolledUp"></EventAppBar>
-        <!-- <v-navigation-drawer width="350" floating v-if="selected">
-            <div class="d-flex flex-column">
-                <v-img src="https://images.pexels.com/photos/4498362/pexels-photo-4498362.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4498362.jpg&fm=jpg"></v-img>
-
-                <div class="pa-5">
-                    <h3 class="d-flex text-blue-grey-darken-3 mb-2">{{ selected.title }}
-                    <v-btn size="x-small" variant="plain"  icon="mdi-pencil" flat></v-btn>
-                    </h3>
-
-                    <div class="mb-5">
-                        <h4 class="mb-1 font-weight-normal text-grey-darken-4">Time remaining</h4>
-                        <VProgressLinear :model-value="50" height="20"></VProgressLinear>
-                    </div>
-                    <div class="mb-5">
-                        <h4 class="mb-1 font-weight-normal text-grey-darken-4">Progress</h4>
-                        <VProgressLinear :model-value="50" height="20"></VProgressLinear>
-                    </div>
-                    <div class="d-flex align-center justify-center pt-2">
-                        <v-btn prepend-icon="mdi-plus" color="success" class="mt-5 mx-auto rounded-0">Invite attendee</v-btn>
-                    </div>
-                </div>
-            </div>
-        </v-navigation-drawer> -->
         <div :class="scrolledUp ? 'pt-10' : 'pt-15'" v-if="selected">
             <EventBoxVue :event="selected"></EventBoxVue>
         </div>

@@ -18,5 +18,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        \App\Models\Image::all()->each(function(\App\Models\Image $image){
+            $image->delete();
+        });
     }
 }

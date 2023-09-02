@@ -12,7 +12,7 @@ export default () => {
         }), {onSuccess: () => {
             showMessageDialog.value = false
             form.reset()
-        }})
+        }, preserveScroll: true, preserveState: true, })
     }
 
 

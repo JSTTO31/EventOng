@@ -79,7 +79,7 @@ export default () => {
     ]
 
     const submit = () => {
-        form.post(route('event.store'))
+        form.post(route('events.store'))
     }
 
     const flat = ref(true)

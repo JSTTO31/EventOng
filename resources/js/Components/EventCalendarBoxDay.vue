@@ -1,11 +1,11 @@
 <template>
    <div style="width: 14.28571428571429% !important;"  class="rounded-0 border pa-0">
-        <v-card flat  class="rounded-0" height="80" @click="showEventsDialog = true" :variant="currentMonth != date.getMonth() ? 'plain' : 'text'">
+        <v-card flat  class="rounded-0" height="100" @click="showEventsDialog = true" :variant="currentMonth != date.getMonth() ? 'plain' : 'text'">
             <h4 class="py-1 px-2 font-weight-medium text-caption">
                 {{ date.getDate().toString().padStart(2, '0')  }}
             </h4>
             <div class="d-flex flex-wrap px-2">
-                    <v-chip :key="event.id" size="x-small" class="mb-1 px-3 mr-1" color="blue" variant="elevated" flat  v-for="event, n in events">{{ (n+1).toString().padStart(2, '0') }} </v-chip>
+                    <v-chip :key="event.id" size="x-small" class="mb-1 px-3 mr-1" color="blue" variant="elevated" flat  v-for="event, n in events.slice(0, 3)">{{ event.title }} </v-chip>
             </div>
         </v-card>
     </div>

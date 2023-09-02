@@ -1,11 +1,10 @@
 <script setup>
 import WelcomeEventCard from '@/Components/WelcomeEventCard.vue';
-import useEvent from '@/Composables/useEvent';
-import {getMonth} from '@/Composables/useUtilities'
 import { Head, Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
 const props = defineProps(['background', 'events']);
-
+window.Echo.private('App.Models.User.' + 1).notification((notification) => {
+    console.log(notification)
+});
 </script>
 
 <template>
@@ -32,11 +31,6 @@ const props = defineProps(['background', 'events']);
                     </v-row>
                 </v-container>
             </v-card>
-            <!-- <div class="h-screen w-full bg-white"></div> -->
-
-            <!--
-
-            <div class="h-screen w-full bg-white"></div> -->
         </v-main>
     </v-app>
 </template>

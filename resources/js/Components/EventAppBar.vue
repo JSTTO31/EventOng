@@ -6,13 +6,13 @@
         </v-card>
         <v-card class="px-5" :class="!scrolledUp ? 'd-flex w-100' : 'w-75'" flat>
             <h3 class="d-flex  text-blue-grey-darken-3 align-center" :class="!scrolledUp ? 'w-50 mb-5' : ' mb-2'">{{ event.title }}
-                <v-btn size="x-small" variant="plain"  icon="mdi-pencil" flat></v-btn>
+                <v-btn size="x-small" variant="plain"  icon="mdi-pencil" @click="$inertia.visit($route('events.edit', {event: event.id}))" flat></v-btn>
             </h3>
             <div class="mb-5 d-flex align-center" v-if="scrolledUp">
                 <v-chip color="black" variant="tonal" class="mr-2  pa-5 mr-2 rounded-lg" prepend-icon="mdi-calendar-start">{{  date_start(event) }}</v-chip>
                 <v-chip v-if="date_start(event) != date_end(event)" color="black" variant="tonal" class=" pa-5 mr-2 rounded-lg" prepend-icon="mdi-calendar-end">{{ date_end(event) }}</v-chip>
                 <v-chip color="black" variant="tonal" class=" pa-5 mr-2 rounded-lg" prepend-icon="mdi-clock">{{ event.date_time.event_time_start }}-{{ event.date_time.event_time_end }}</v-chip>
-                <v-chip color="black" variant="tonal" class=" pa-5 mr-2 rounded-lg" prepend-icon="mdi-map-marker">{{ event.location.name }}</v-chip>
+                <v-chip color="black" variant="tonal" class=" pa-5 mr-2 rounded-lg" prepend-icon="mdi-map-marker" v-if="event.location">{{ event.location.name }}</v-chip>
             </div>
             <div class="d-flex w-100">
             <div class="mb-5 w-50 pr-5">

@@ -32,3 +32,15 @@ export function getAllDayInMonth(currentMonth){
 
     return dateContainer
 }
+
+
+export function mainTab(){
+    const shuffledArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+
+    sessionStorage.setItem('notification_id');
+    sessionStorage.setItem('');
+}

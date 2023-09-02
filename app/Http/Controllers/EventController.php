@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EventStoreRequest;
 use App\Models\Attendee;
+use App\Models\Course;
 use App\Models\Event;
 use App\Models\Location;
 use App\Models\Organizer;
 use App\Repositories\EventRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -23,8 +25,10 @@ class EventController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Event', [
-            'events' => $this->eventRepository->getEvents(['date_time']),
+            'events' => $this->eventRepository->getEvents(['date_time', 'location', 'organizer']),
             'event' => $this->eventRepository->getEvent($request->event),
+            'events_count' => Event::select(DB::raw('COUNT(id) as count'))->first()['count'] ?? 0,
+            'courses' => Course::all(),
         ]);
 
     }
@@ -33,7 +37,8 @@ class EventController extends Controller
     {
         return Inertia::render('Event/Create', [
             'locations' => Location::latest()->get(),
-            'organizers' => Organizer::latest()->get()
+            'organizers' => Organizer::latest()->get(),
+            'courses' => Course::all(),
         ]);
     }
 

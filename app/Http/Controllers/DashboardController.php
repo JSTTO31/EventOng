@@ -22,7 +22,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'events' => Event::with(['date_time'])->get(),
             'statuses' => $this->eventRepository->getStatuses(),
-            'attendees' => Attendee::latest()->limit(10)->get(),
+            'attendees' => Attendee::latest()->limit(8)->get(),
         ]);
     }
 }

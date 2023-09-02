@@ -6,17 +6,15 @@ use App\Models\Attendee;
 use App\Models\Event;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
-class AttendeeRegistered extends Mailable
+class GratitudeMessage extends Mailable
 {
     use Queueable, SerializesModels;
-
     public $attendee;
     public $event;
 
@@ -34,7 +32,7 @@ class AttendeeRegistered extends Mailable
     {
         return new Envelope(
             from: new Address('inventive.media@gmail.com', 'Henry Ong'),
-            subject: 'Attendee Registered',
+            subject: 'Thank You for Attending',
         );
     }
 
@@ -44,7 +42,7 @@ class AttendeeRegistered extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.events.attendee-registered',
+            markdown: 'emails.events.thankyou-attendee',
         );
     }
 
